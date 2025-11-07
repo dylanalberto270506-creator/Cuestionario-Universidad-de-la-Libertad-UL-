@@ -167,7 +167,7 @@
                 <!-- Nombre -->
                 <div>
                     <label for="student-name" class="block font-semibold mb-2" style="color: var(--color-text-body);">Nombre Completo del Participante:</label>
-                    <input type="text" id="student-name" placeholder="Escriba su nombre completo" required
+                    <input type="text" id="student-name" name="Nombre Completo" placeholder="Escriba su nombre completo" required
                            class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2"
                            style="background-color: var(--color-bg-input); border-color: var(--color-border-input); color: var(--color-text-input); focus-ring-color: var(--color-vote-highlight);">
                 </div>
@@ -175,7 +175,7 @@
                 <!-- Matrícula -->
                 <div>
                     <label for="student-id" class="block font-semibold mb-2" style="color: var(--color-text-body);">Matrícula:</label>
-                    <input type="text" id="student-id" placeholder="Ingrese su matrícula (solo números)" required
+                    <input type="text" id="student-id" name="Matrícula" placeholder="Ingrese su matrícula (solo números)" required
                            class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2"
                            style="background-color: var(--color-bg-input); border-color: var(--color-border-input); color: var(--color-text-input); focus-ring-color: var(--color-vote-highlight);">
                     <p id="matricula-warning" class="text-sm mt-2 text-red-500 hidden font-medium">
@@ -240,11 +240,20 @@
         <!-- STEP 3: PANTALLA DE AGRADECIMIENTO (Oculto por defecto) -->
         <div id="step-3-container" class="hidden flex-col items-center justify-center space-y-8 p-6 md:p-12 rounded-xl shadow-2xl text-center min-h-[50vh]"
             style="background-color: var(--color-bg-card); border: 1px solid var(--color-border-main);">
-            <svg class="w-16 h-16" style="color: var(--color-text-header);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <h1 class="text-3xl md:text-4xl font-extrabold" style="color: var(--color-text-header);">¡Cuestionario Finalizado!</h1>
-            <p class="text-xl" style="color: var(--color-text-body);">
+            
+            <div id="final-status-icon-success">
+                <svg class="w-16 h-16" style="color: var(--color-text-header);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <div id="final-status-icon-error" class="hidden">
+                 <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+
+            <h1 id="final-status-title" class="text-3xl md:text-4xl font-extrabold" style="color: var(--color-text-header);">¡Cuestionario Finalizado!</h1>
+            <p id="final-status-message" class="text-xl" style="color: var(--color-text-body);">
                 Agradecemos profundamente tu tiempo y colaboración. Tu valiosa información será utilizada exclusivamente para fines académicos en el Estudio de Mercado de la Universidad La Libertad.
             </p>
             <p class="text-sm" style="color: var(--color-text-secondary);">
@@ -259,6 +268,9 @@
         // ====================================================================
         // CONSTANTES GLOBALES Y ESTADO
         // ====================================================================
+        
+        // URL ÚNICA DE FORMSPREE para enviar los datos de la encuesta
+        const FORMSPREE_URL = "https://formspree.io/f/mmpwgrdz";
 
         // Definición de las preguntas y opciones (13 preguntas en total, 7 páginas)
         const QUESTIONS = [
@@ -267,26 +279,26 @@
                 id: 'q1',
                 question: '1.) ¿Dónde sueles ver publicidad de universidades, ya sea en redes sociales, ferias, páginas educativas o cerca de tu escuela o colonia?',
                 options: [
-                    { id: 'a', text: 'A) En redes sociales', votes: 0 },
-                    { id: 'b', text: 'B) En ferias o eventos estudiantiles', votes: 0 },
-                    { id: 'c', text: 'C) En páginas o sitios web educativos', votes: 0 },
-                    { id: 'd', text: 'D) En mi escuela o colonia', votes: 0 },
+                    { id: 'a', text: 'A) En redes sociales' },
+                    { id: 'b', text: 'B) En ferias o eventos estudiantiles' },
+                    { id: 'c', text: 'C) En páginas o sitios web educativos' },
+                    { id: 'd', text: 'D) En mi escuela o colonia' },
                 ],
-                voters: {},
-                page: 1
+                page: 1,
+                name: "Q1_Publicidad_Ubicacion" // Nombre que aparecerá en Formspree
             },
             
             {
                 id: 'q2',
                 question: '2.) ¿Has notado si las universidades se anuncian por medios como televisión, radio, carteles o redes sociales, y en qué época del año ves más publicidad?',
                 options: [
-                    { id: 'a', text: 'A) Sí, en medios tradicionales y digitales durante todo el año', votes: 0 },
-                    { id: 'b', text: 'B) Sí, principalmente antes de inscripciones o regreso a clases', votes: 0 },
-                    { id: 'c', text: 'C) Solo en algunos medios y temporadas específicas', votes: 0 },
-                    { id: 'd', text: 'D) No he notado publicidad universitaria reciente', votes: 0 },
+                    { id: 'a', text: 'A) Sí, en medios tradicionales y digitales durante todo el año' },
+                    { id: 'b', text: 'B) Sí, principalmente antes de inscripciones o regreso a clases' },
+                    { id: 'c', text: 'C) Solo en algunos medios y temporadas específicas' },
+                    { id: 'd', text: 'D) No he notado publicidad universitaria reciente' },
                 ],
-                voters: {},
-                page: 1
+                page: 1,
+                name: "Q2_Publicidad_Medios"
             },
 
             // Sección 2: Preguntas 3 y 4
@@ -294,26 +306,26 @@
                 id: 'q3',
                 question: '3.) ¿Recuerdas alguna campaña, anuncio o evento de alguna universidad que te haya llamado más la atención?',
                 options: [
-                    { id: 'a', text: 'A) Sí, por su mensaje o creatividad', votes: 0 },
-                    { id: 'b', text: 'B) Sí, por los beneficios o becas que ofrecía', votes: 0 },
-                    { id: 'c', text: 'C) Sí, porque la vi muchas veces en distintos medios', votes: 0 },
-                    { id: 'd', text: 'D) No recuerdo ninguna campaña en especial', votes: 0 },
+                    { id: 'a', text: 'A) Sí, por su mensaje o creatividad' },
+                    { id: 'b', text: 'B) Sí, por los beneficios o becas que ofrecía' },
+                    { id: 'c', text: 'C) Sí, porque la vi muchas veces en distintos medios' },
+                    { id: 'd', text: 'D) No recuerdo ninguna campaña en especial' },
                 ],
-                voters: {},
-                page: 2
+                page: 2,
+                name: "Q3_Campaña_Llamativa"
             },
 
             {
                 id: 'q4',
                 question: '4.) ¿Crees que los anuncios de las universidades brindan información importante, como sus beneficios o programas académicos?',
                 options: [
-                    { id: 'a', text: 'A) Sí, explican claramente los beneficios y programas', votes: 0 },
-                    { id: 'b', text: 'B) Sí, pero la información es muy general', votes: 0 },
-                    { id: 'c', text: 'C) No, casi no dan detalles', votes: 0 },
-                    { id: 'd', text: 'D) No estoy seguro / no he visto anuncios recientes', votes: 0 },
+                    { id: 'a', text: 'A) Sí, explican claramente los beneficios y programas' },
+                    { id: 'b', text: 'B) Sí, pero la información es muy general' },
+                    { id: 'c', text: 'C) No, casi no dan detalles' },
+                    { id: 'd', text: 'D) No estoy seguro / no he visto anuncios recientes' },
                 ],
-                voters: {},
-                page: 2
+                page: 2,
+                name: "Q4_Anuncios_Importancia"
             },
             
             // Sección 3: Preguntas 5 y 6
@@ -321,26 +333,26 @@
                 id: 'q5',
                 question: '5.) ¿Qué emociones o impacto te genera la publicidad universitaria y qué tanto influye en tu decisión de interesarte por una escuela?',
                 options: [
-                    { id: 'a', text: 'A) Me motiva y me da confianza para saber más', votes: 0 },
-                    { id: 'b', text: 'B) Me llama la atención, pero no influye mucho en mi decisión', votes: 0 },
-                    { id: 'c', text: 'C) Me resulta indiferente, no me genera interés', votes: 0 }, 
-                    { id: 'd', text: 'D) No me gusta o no confío en la publicidad universitaria', votes: 0 },
+                    { id: 'a', text: 'A) Me motiva y me da confianza para saber más' },
+                    { id: 'b', text: 'B) Me llama la atención, pero no influye mucho en mi decisión' },
+                    { id: 'c', text: 'C) Me resulta indiferente, no me genera interés' }, 
+                    { id: 'd', text: 'D) No me gusta o no confío en la publicidad universitaria' },
                 ],
-                voters: {},
-                page: 3
+                page: 3,
+                name: "Q5_Emocion_Publicidad"
             },
 
             {
                 id: 'q6',
                 question: '6.) ¿Crees que la publicidad universitaria está dirigida a todos los estudiantes o a ciertos perfiles, y te han llegado anuncios o correos relacionados con tus intereses educativos?',
                 options: [
-                    { id: 'a', text: 'A) Sí, está dirigida a todo tipo de estudiantes', votes: 0 },
-                    { id: 'b', text: 'B) No, va más enfocada a ciertos perfiles o carreras', votes: 0 },
-                    { id: 'c', text: 'C) Sí, he recibido correos o anuncios según mis intereses', votes: 0 },
-                    { id: 'd', text: 'D) No he recibido publicidad relacionada conmigo', votes: 0 },
+                    { id: 'a', text: 'A) Sí, está dirigida a todo tipo de estudiantes' },
+                    { id: 'b', text: 'B) No, va más enfocada a ciertos perfiles o carreras' },
+                    { id: 'c', text: 'C) Sí, he recibido correos o anuncios según mis intereses' },
+                    { id: 'd', text: 'D) No he recibido publicidad relacionada conmigo' },
                 ],
-                voters: {},
-                page: 3
+                page: 3,
+                name: "Q6_Publicidad_Dirigida"
             },
 
             // Sección 4: Preguntas 7 y 8
@@ -348,26 +360,26 @@
                 id: 'q7',
                 question: '7.) ¿Qué otras universidades de tu zona consideras parecidas en nivel académico y cuáles te parecen más reconocidas a nivel nacional?',
                 options: [
-                    { id: 'a', text: 'A) Hay varias en mi zona con nivel similar', votes: 0 },
-                    { id: 'b', text: 'B) Solo conozco unas pocas universidades reconocidas', votes: 0 },
-                    { id: 'c', text: 'C) Considero que la universidad más cercana es la más destacada', votes: 0 },
-                    { id: 'd', text: 'D) No conozco muchas universidades ni su nivel académico', votes: 0 },
+                    { id: 'a', text: 'A) Hay varias en mi zona con nivel similar' },
+                    { id: 'b', text: 'B) Solo conozco unas pocas universidades reconocidas' },
+                    { id: 'c', text: 'C) Considero que la universidad más cercana es la más destacada' },
+                    { id: 'd', text: 'D) No conozco muchas universidades ni su nivel académico' },
                 ],
-                voters: {},
-                page: 4
+                page: 4,
+                name: "Q7_Universidades_Similares"
             },
 
             {
                 id: 'q8',
                 question: '8.) ¿Qué universidades extranjeras consideras como referencia o ejemplo en su modelo educativo?',
                 options: [
-                    { id: 'a', text: 'A) Universidades de Estados Unidos (como Harvard, MIT, Stanford)', votes: 0 },
-                    { id: 'b', text: 'B) Universidades de Europa (como Oxford, Cambridge, Sorbona)', votes: 0 },
-                    { id: 'c', text: 'C) Universidades de Latinoamérica (como la de Buenos Aires o Chile)', votes: 0 },
-                    { id: 'd', text: 'D) No conozco universidades extranjeras reconocidas', votes: 0 },
+                    { id: 'a', text: 'A) Universidades de Estados Unidos (como Harvard, MIT, Stanford)' },
+                    { id: 'b', text: 'B) Universidades de Europa (como Oxford, Cambridge, Sorbona)' },
+                    { id: 'c', text: 'C) Universidades de Latinoamérica (como la de Buenos Aires o Chile)' },
+                    { id: 'd', text: 'D) No conozco universidades extranjeras reconocidas' },
                 ],
-                voters: {},
-                page: 4
+                page: 4,
+                name: "Q8_Universidades_Extranjeras"
             },
 
             // Sección 5: Preguntas 9 y 10
@@ -375,26 +387,26 @@
                 id: 'q9',
                 question: '9.) ¿Qué factores académicos consideras más importantes al elegir una universidad, como el uso de tecnología, la preparación de los docentes, los valores institucionales o los resultados que ofrece?',
                 options: [
-                    { id: 'a', text: 'A) La preparación y conocimiento de los docentes', votes: 0 },
-                    { id: 'b', text: 'B) El uso de tecnología y plataformas digitales', votes: 0 },
-                    { id: 'c', text: 'C) Los valores, filosofía y resultados de la institución', votes: 0 },
-                    { id: 'd', text: 'D) Todos son igual de importantes al momento de decidir', votes: 0 },
+                    { id: 'a', text: 'A) La preparación y conocimiento de los docentes' },
+                    { id: 'b', text: 'B) El uso de tecnología y plataformas digitales' },
+                    { id: 'c', text: 'C) Los valores, filosofía y resultados de la institución' },
+                    { id: 'd', text: 'D) Todos son igual de importantes al momento de decidir' },
                 ],
-                voters: {},
-                page: 5
+                page: 5,
+                name: "Q9_Factores_Academicos"
             },
             
             {
                 id: 'q10',
                 question: '10.) ¿Hay algún programa académico o carrera universitaria que te haya llamado la atención?',
                 options: [
-                    { id: 'a', text: 'A) Sí, por su plan de estudios o materias', votes: 0 },
-                    { id: 'b', text: 'B) Sí, por las oportunidades laborales que ofrece', votes: 0 },
-                    { id: 'c', text: 'C) Sí, por las becas o beneficios que incluye', votes: 0 },
-                    { id: 'd', text: 'D) No, ninguno me ha llamado la atención', votes: 0 },
+                    { id: 'a', text: 'A) Sí, por su plan de estudios o materias' },
+                    { id: 'b', text: 'B) Sí, por las oportunidades laborales que ofrece' },
+                    { id: 'c', text: 'C) Sí, por las becas o beneficios que incluye' },
+                    { id: 'd', text: 'D) No, ninguno me ha llamado la atención' },
                 ],
-                voters: {},
-                page: 5
+                page: 5,
+                name: "Q10_Programa_Llamativo"
             },
 
             // Sección 6: Preguntas 11 y 12
@@ -402,26 +414,26 @@
                 id: 'q11',
                 question: '11.) ¿Qué tan importante consideras el costo de inscripción o colegiatura y las becas que ofrecen las universidades para atraer estudiantes?',
                 options: [
-                    { id: 'a', text: 'A) Muy importante, influye directamente en mi decisión', votes: 0 },
-                    { id: 'b', text: 'B) Importante, pero depende de la calidad académica', votes: 0 },
-                    { id: 'c', text: 'C) Poco importante, si la universidad lo vale', votes: 0 },
-                    { id: 'd', text: 'D) No me fijo mucho en el costo o las becas', votes: 0 },
+                    { id: 'a', text: 'A) Muy importante, influye directamente en mi decisión' },
+                    { id: 'b', text: 'B) Importante, pero depende de la calidad académica' },
+                    { id: 'c', text: 'C) Poco importante, si la universidad lo vale' },
+                    { id: 'd', text: 'D) No me fijo mucho en el costo o las becas' },
                 ],
-                voters: {},
-                page: 6
+                page: 6,
+                name: "Q11_Costo_Becas"
             },
 
             {
                 id: 'q12',
                 question: '12.) ¿Qué tan relevante te parece que una universidad tenga convenios con otras instituciones o empresas?',
                 options: [
-                    { id: 'a', text: 'A) Muy relevante, ayuda a obtener prácticas y empleo', votes: 0 },
-                    { id: 'b', text: 'B) Relevante, pero no es lo más importante', votes: 0 },
-                    { id: 'c', text: 'C) Poco relevante, no influye mucho en mi decisión', votes: 0 },
-                    { id: 'd', text: 'D) No considero importante que tenga convenios', votes: 0 },
+                    { id: 'a', text: 'A) Muy relevante, ayuda a obtener prácticas y empleo' },
+                    { id: 'b', text: 'B) Relevante, pero no es lo más importante' },
+                    { id: 'c', text: 'C) Poco relevante, no influye mucho en mi decisión' },
+                    { id: 'd', text: 'D) No considero importante que tenga convenios' },
                 ],
-                voters: {},
-                page: 6
+                page: 6,
+                name: "Q12_Convenios"
             },
             
             // Sección 7: Pregunta 13
@@ -429,13 +441,13 @@
                 id: 'q13',
                 question: '13.) ¿Qué tan seguido escuchas recomendaciones sobre la universidad por su calidad y prestigio, y qué tanto valoras las opiniones o experiencias de otras personas al elegir dónde estudiar?',
                 options: [
-                    { id: 'a', text: 'A) Muy seguido y las opiniones influyen mucho en mi decisión', votes: 0 },
-                    { id: 'b', text: 'B) A veces escucho comentarios, pero no determinan mi elección', votes: 0 },
-                    { id: 'c', text: 'C) Rara vez escucho recomendaciones, confío más en mi propio criterio', votes: 0 },
-                    { id: 'd', text: 'D) No me baso en opiniones ni recomendaciones de otros', votes: 0 },
+                    { id: 'a', text: 'A) Muy seguido y las opiniones influyen mucho en mi decisión' },
+                    { id: 'b', text: 'B) A veces escucho comentarios, pero no determinan mi elección' },
+                    { id: 'c', text: 'C) Rara vez escucho recomendaciones, confío más en mi propio criterio' },
+                    { id: 'd', text: 'D) No me baso en opiniones ni recomendaciones de otros' },
                 ],
-                voters: {},
-                page: 7
+                page: 7,
+                name: "Q13_Recomendaciones"
             },
         ];
 
@@ -523,9 +535,9 @@
                         
                         htmlContent += `
                             <div class="mb-3">
-                                <input type="radio" id="${uniqueId}" name="${q.id}" value="${option.id}" 
+                                <input type="radio" id="${uniqueId}" name="${q.id}" value="${option.text}" 
                                     ${isChecked ? 'checked' : ''} class="hidden option-input"
-                                    onchange="saveResponse('${q.id}', '${option.id}', this)">
+                                    onchange="saveResponse('${q.id}', '${option.id}')">
                                 <label for="${uniqueId}" 
                                     class="flex items-center p-4 rounded-lg cursor-pointer border transition-all duration-300 option-label hover:border-violet-400">
                                     <span class="text-lg font-medium">${option.text}</span>
@@ -630,9 +642,17 @@
                     const questionElement = document.getElementById('question-container').querySelector(`input[name="${q.id}"]`);
                     
                     if (questionElement) {
-                        questionElement.closest('.question-item').style.borderColor = 'red';
+                        // Envolver la pregunta en un color de error.
+                        questionElement.closest('.question-item').style.borderColor = 'var(--color-vote-highlight)'; 
+                        questionElement.closest('.question-item').style.boxShadow = '0 0 0 3px rgba(255, 0, 0, 0.5)'; // Rojo con transparencia
                     }
                     allAnswered = false;
+                } else {
+                     // Remover la sombra si está respondida
+                    const questionElement = document.getElementById('question-container').querySelector(`input[name="${q.id}"]`);
+                    if (questionElement) {
+                         questionElement.closest('.question-item').style.boxShadow = '0 0 0 0 transparent'; 
+                    }
                 }
             }
             
@@ -643,42 +663,124 @@
         }
 
         /**
+         * Convierte los datos de la encuesta en un objeto FormData listo para Formspree.
+         * @param {Object} finalData - El objeto final con USER_INFO y USER_RESPONSES.
+         * @returns {FormData} - Objeto FormData para la solicitud POST.
+         */
+        function prepareFormData(finalData) {
+            const formData = new FormData();
+            
+            // 1. Agregar Información del Participante
+            formData.append("Nombre Completo", finalData.userInfo.name);
+            formData.append("Matrícula", finalData.userInfo.studentId);
+            formData.append("Fecha/Hora de Envío", finalData.timestamp);
+            
+            // 2. Agregar Respuestas de las Preguntas
+            for (const questionId in finalData.responses) {
+                const responseId = finalData.responses[questionId]; // e.g., 'a'
+                
+                // Buscar la pregunta para obtener el nombre clave y el texto completo de la respuesta
+                const questionObj = QUESTIONS.find(q => q.id === questionId);
+                
+                if (questionObj) {
+                    const responseOption = questionObj.options.find(opt => opt.id === responseId);
+                    
+                    if (responseOption) {
+                        // Usamos el campo 'name' de la pregunta y el 'text' de la opción como valor
+                        formData.append(questionObj.name, responseOption.text);
+                    }
+                }
+            }
+            
+            return formData;
+        }
+
+        /**
+         * Muestra la pantalla de agradecimiento o error después del envío.
+         * @param {boolean} success - Si el envío fue exitoso.
+         */
+        function showFinalStatusScreen(success) {
+            const step2 = document.getElementById('step-2-container');
+            const step3 = document.getElementById('step-3-container');
+            const title = document.getElementById('final-status-title');
+            const message = document.getElementById('final-status-message');
+            const iconSuccess = document.getElementById('final-status-icon-success');
+            const iconError = document.getElementById('final-status-icon-error');
+
+            step2.classList.add('hidden');
+            step3.classList.remove('hidden');
+            step3.classList.add('flex');
+
+            if (success) {
+                iconSuccess.classList.remove('hidden');
+                iconError.classList.add('hidden');
+                title.textContent = '¡Cuestionario Finalizado!';
+                message.textContent = 'Agradecemos profundamente tu tiempo y colaboración. Tu valiosa información ha sido enviada con éxito para el Estudio de Mercado de la Universidad La Libertad.';
+                title.style.color = 'var(--color-text-header)';
+
+            } else {
+                iconSuccess.classList.add('hidden');
+                iconError.classList.remove('hidden');
+                title.textContent = '¡Error en el Envío!';
+                message.textContent = 'Hubo un problema al enviar tu cuestionario. Por favor, revisa tu conexión a Internet o contacta al encuestador.';
+                title.style.color = 'red';
+            }
+        }
+        
+        /**
          * Maneja el clic en el botón 'Siguiente' o 'Finalizar'.
          */
         function handleNext() {
-            try {
-                // 1. Validar la página actual
-                if (!validateCurrentPage()) {
-                    return; // Detiene si falta responder algo
-                }
+            // 1. Validar la página actual
+            if (!validateCurrentPage()) {
+                return; // Detiene si falta responder algo
+            }
+            
+            // 2. Si es la última página, finalizar la encuesta
+            if (currentPage >= TOTAL_PAGES) {
+                // Preparamos los datos
+                const finalData = {
+                    userInfo: USER_INFO,
+                    responses: USER_RESPONSES,
+                    timestamp: new Date().toISOString()
+                };
                 
-                // 2. Si es la última página, finalizar la encuesta
-                if (currentPage >= TOTAL_PAGES) {
-                    // Aquí es donde iría la lógica para enviar los datos al servidor.
-                    
-                    // Construir el objeto de datos final
-                    const finalData = {
-                        userInfo: USER_INFO,
-                        responses: USER_RESPONSES,
-                        timestamp: new Date().toISOString()
-                    };
+                console.log("DATOS FINALES DE LA ENCUESTA (listos para enviar):", finalData);
+                
+                // CAMBIO CLAVE: ENVÍO DE DATOS A FORMSPREE
+                document.getElementById('next-button').textContent = "Enviando...";
+                document.getElementById('next-button').disabled = true;
 
-                    console.log("DATOS FINALES DE LA ENCUESTA (listos para enviar):", finalData);
-                    
-                    // Mostrar pantalla de agradecimiento
-                    document.getElementById('step-2-container').classList.add('hidden');
-                    document.getElementById('step-3-container').classList.remove('hidden');
-                    document.getElementById('step-3-container').classList.add('flex');
-                    
-                    // Nota: Si esto fuera una aplicación real, se usaría fetch() para enviar 'finalData'
-                    
-                } else {
-                    // 3. Si no es la última página, ir a la siguiente
-                    goToPage(currentPage + 1);
-                }
-            } catch (error) {
-                console.error("Error al avanzar a la siguiente página o finalizar:", error);
-                showMessage("Ocurrió un error inesperado. Intente recargar la página.", true);
+                fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    body: prepareFormData(finalData), // Usamos la función que prepara el FormData
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showFinalStatusScreen(true); // Éxito
+                    } else {
+                        // Manejo de errores de Formspree
+                        console.error("Error al enviar a Formspree:", response);
+                        showFinalStatusScreen(false); // Error
+                    }
+                })
+                .catch(error => {
+                    // Manejo de errores de red
+                    console.error("Error de red al enviar el formulario:", error);
+                    showFinalStatusScreen(false); // Error
+                })
+                .finally(() => {
+                     // Restaurar el botón (aunque no se verá, es buena práctica)
+                    document.getElementById('next-button').textContent = "Finalizar Cuestionario";
+                    document.getElementById('next-button').disabled = false;
+                });
+                
+            } else {
+                // 3. Si no es la última página, ir a la siguiente
+                goToPage(currentPage + 1);
             }
         }
         
