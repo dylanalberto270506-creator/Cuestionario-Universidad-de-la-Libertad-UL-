@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CLAVE RESPONSIVA: Esta meta etiqueta asegura que el ancho de la página se ajuste al ancho del dispositivo. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Mi Perfil Profesional</title>
     <!-- Carga de Tailwind CSS para un diseño moderno y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -95,34 +96,37 @@
 </head>
 <body class="transition duration-500">
 
-    <!-- Barra de Navegación (Header) -->
+    <!-- Barra de Navegación (Header) - Fija en la parte superior -->
     <header class="page-header sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <a href="#inicio" class="text-2xl font-bold text-main-color hover:text-primary-color transition duration-300">
                 MI LinkedIn
             </a>
-            <div class="flex space-x-4 md:space-x-8 items-center">
-                <!-- Los nav-links ahora solo usan las clases genéricas de color y el activo usa la variable -->
+            <!-- Ajuste responsivo de navegación: Oculto en móviles y visible en medianos y grandes -->
+            <div class="hidden md:flex space-x-4 md:space-x-8 items-center">
                 <a href="#inicio" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="inicio">Inicio</a>
                 <a href="#sobre-mi" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="sobre-mi">Sobre Mí</a>
                 <a href="#proyectos" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="proyectos">Proyectos</a>
                 <a href="#habilidades" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="habilidades">Habilidades</a>
                 <a href="#contacto" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="contacto">Contacto</a>
-
-                <!-- Interruptor de Modo Oscuro/Solar -->
-                <button id="themeToggle" class="p-2 rounded-full bg-gray-100 text-sub-color hover:bg-gray-200 transition duration-300 dark:bg-gray-700 dark:hover:bg-gray-600" title="Alternar Modo Oscuro/Claro">
-                    <i data-lucide="sun" id="sunIcon" class="w-5 h-5 transition-transform duration-300"></i>
-                    <i data-lucide="moon" id="moonIcon" class="w-5 h-5 transition-transform duration-300 hidden"></i>
-                </button>
             </div>
+
+            <!-- Interruptor de Modo Oscuro/Solar - Visible en todas las pantallas -->
+            <button id="themeToggle" class="p-2 rounded-full bg-gray-100 text-sub-color hover:bg-gray-200 transition duration-300 dark:bg-gray-700 dark:hover:bg-gray-600" title="Alternar Modo Oscuro/Claro">
+                <i data-lucide="sun" id="sunIcon" class="w-5 h-5 transition-transform duration-300"></i>
+                <i data-lucide="moon" id="moonIcon" class="w-5 h-5 transition-transform duration-300 hidden"></i>
+            </button>
+            
+            <!-- (Nota: En un sitio real, la navegación móvil (hamburguesa) se implementaría aquí) -->
         </nav>
     </header>
 
-    <!-- Contenido Principal -->
+    <!-- Contenido Principal - Usa un ancho máximo para centrar el contenido y padding horizontal responsivo -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
         <!-- 1. Sección de Inicio (Hero) -->
         <section id="inicio" class="py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10">
+            <!-- Texto (ocupa 100% en móvil, 3/5 en mediano/escritorio) -->
             <div class="md:w-3/5 text-center md:text-left">
                 <p class="text-lg text-sub-color mb-2">¡Hola! Soy</p>
                 <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight text-main-color">
@@ -135,14 +139,11 @@
                     Tengo 19 años y, como estudiante, me dedico a explorar soluciones que combinan la administración con la innovación de negocios. Me apasiona transformar ideas complejas en productos funcionales y accesibles.
                 </p>
             </div>
-            <div class="md:w-2/5 flex justify-center">
-                <!-- Placeholder de Imagen de Perfil -->
-                <div class="w-64 h-64 md:w-80 md:h-80 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-xl transition duration-500">
-                    
-                    <!-- 🚨🚨🚨 RUTA DE LA IMAGEN ACTUALIZADA A UN PLACEHOLDER PÚBLICO GARANTIZADO 🚨🚨🚨 -->
-                    <!-- NOTA: Los enlaces de archivos subidos previamente no estaban funcionando. Este placeholder sí lo hará. -->
+            <!-- Foto/Placeholder (ocupa 100% en móvil, 2/5 en mediano/escritorio) -->
+            <div class="w-full flex justify-center md:w-2/5">
+                <!-- Se ha ajustado el tamaño para que sea responsivo en el contenedor -->
+                <div class="w-64 h-64 sm:w-80 sm:h-80 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-xl transition duration-500">
                     <img src="https://placehold.co/800x800/0077B5/FFFFFF?text=D.G." alt="Placeholder de Foto de perfil de Dylan Gonzalez" class="object-cover w-full h-full">
-                    
                 </div>
             </div>
         </section>
@@ -153,9 +154,9 @@
         <section id="sobre-mi" class="py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Sobre Mí</h2>
             <div class="card">
+                <!-- Grid responsivo: Una columna en móvil, dos columnas en mediano/escritorio -->
                 <div class="grid md:grid-cols-2 gap-8">
                     <div>
-                        <!-- TEXTO ACTUALIZADO CON STRONG TAGS -->
                         <p class="text-sub-color mb-4 leading-relaxed">
                             Mi trayectoria laboral ha estado profundamente ligada a un <strong>negocio familiar de comida</strong>, donde he adquirido una experiencia de 19 años en la gestión operativa y administrativa desde que nací. Actualmente, me encargo de áreas críticas como la <strong>parte financiera y legal</strong>.
                         </p>
@@ -163,20 +164,15 @@
                             Mi enfoque en la innovación de negocios me ha llevado a generar ideas creativas, como la <strong>creación de nuevos menús y encuestas de satisfacción</strong>. Además, he complementado mi formación con un curso especializado en <strong>programación con Inteligencia Artificial</strong>, buscando fusionar la experiencia tradicional de negocios con soluciones tecnológicas avanzadas.
                         </p>
                         <div class="mt-6 flex space-x-4">
-                            <!-- Instagram (Link que ahora usan todos los iconos) -->
                             <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="text-sub-color hover:text-blue-700 transition duration-300 dark:hover:text-blue-500" title="Perfil de Instagram">
                                 <i data-lucide="instagram" class="w-6 h-6 inline-block"></i>
                             </a>
-                            <!-- Facebook (Link real) -->
                             <a href="https://www.facebook.com/share/1VcsY17kop/?mibextid=wwXIfr" target="_blank" class="text-sub-color hover:text-blue-600 transition duration-300 dark:hover:text-blue-400" title="Perfil de Facebook">
                                 <i data-lucide="facebook" class="w-6 h-6 inline-block"></i>
                             </a>
-                            <!-- TikTok (Link real) -->
                             <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="text-sub-color hover:text-main-color transition duration-300" title="Perfil de TikTok">
-                                <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
                                 <i data-lucide="video" class="w-6 h-6 inline-block"></i> 
                             </a>
-                            <!-- Email (Se mantiene el enlace de correo) -->
                             <a href="mailto:dylan.gonzalez@ejemplo.com" class="text-sub-color hover:text-red-600 transition duration-300 dark:hover:text-red-400" title="Email de Contacto">
                                 <i data-lucide="mail" class="w-6 h-6 inline-block"></i>
                             </a>
@@ -185,17 +181,14 @@
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
                             <i data-lucide="graduation-cap" class="text-primary-color w-6 h-6"></i>
-                            <!-- EDUCACIÓN ACTUALIZADA -->
                             <p class="text-main-color font-medium">Educación: Licenciatura en Ingeniería de Sistemas, Universidad La Salle</p>
                         </div>
                         <div class="flex items-center space-x-3">
                             <i data-lucide="briefcase" class="text-primary-color w-6 h-6"></i>
-                            <!-- EXPERIENCIA ACTUALIZADA -->
                             <p class="text-main-color font-medium">Experiencia: 12 años en el tema de restaurante</p>
                         </div>
                         <div class="flex items-center space-x-3">
                             <i data-lucide="globe" class="text-primary-color w-6 h-6"></i>
-                            <!-- UBICACIÓN ACTUALIZADA -->
                             <p class="text-main-color font-medium">Ubicación: Ciudad de México, México</p>
                         </div>
                     </div>
@@ -204,13 +197,13 @@
         </section>
 
         <!-- 3. Sección de Proyectos -->
-        <!-- NOTA: Esta sección usa colores más específicos (gray-50/gray-700) para darle un ligero contraste con el fondo de la página, por lo que mantendremos el dualismo dark: para esos elementos hijos. -->
         <section id="proyectos" class="py-16 bg-white dark:bg-gray-900 rounded-xl mb-8 p-6 md:p-10 shadow-lg transition duration-500">
             <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Proyectos Destacados</h2>
             
-            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Grid responsivo: 1 col móvil, 2 col mediano, 4 col grande -->
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 
-                <!-- Tarjeta de Proyecto 1: Educación Financiera -->
+                <!-- Tarjeta de Proyecto 1 -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
                     <i data-lucide="banknote" class="text-primary-color w-8 h-8 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2 text-main-color">Educación Financiera para Menores</h3>
@@ -222,7 +215,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta de Proyecto 2: Negocio de Repostería -->
+                <!-- Tarjeta de Proyecto 2 -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
                     <i data-lucide="cake" class="text-primary-color w-8 h-8 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2 text-main-color">Negocio de Repostería (Emprendimiento)</h3>
@@ -234,7 +227,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta de Proyecto 3: Fabricación y Diseño de Gorras -->
+                <!-- Tarjeta de Proyecto 3 -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
                     <i data-lucide="hat-off" class="text-primary-color w-8 h-8 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2 text-main-color">Fabricación y Diseño de Gorras</h3>
@@ -246,7 +239,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta de Proyecto 4: IA para Restaurante -->
+                <!-- Tarjeta de Proyecto 4 -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
                     <i data-lucide="zap" class="text-primary-color w-8 h-8 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2 text-main-color">Implementación de IA para restaurante</h3>
@@ -265,7 +258,8 @@
         <section id="habilidades" class="py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Habilidades y Competencias Clave</h2>
             <div class="card">
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Grid responsivo: 1 col móvil, 2 col mediano, 3 col grande -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     
                     <!-- Columna 1: Gestión Empresarial y Operaciones (Restaurante y Finanzas) -->
                     <div>
@@ -309,6 +303,7 @@
                 <!-- BLOQUE DE CONEXIÓN DIRECTA (REDES SOCIALES Y CONTACTO) -->
                 <div class="mb-10 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-main-color">
                     <h4 class="text-xl font-semibold text-center mb-6 text-main-color">Conéctate Directamente</h4>
+                    <!-- Grid responsivo: 2 col móvil, 3 col en mediano/grande -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
                         
                         <!-- Instagram (Link Principal) -->
@@ -343,12 +338,10 @@
 
                         <!-- TikTok (ACTUALIZADO) -->
                         <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir a TikTok">
-                            <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
                             <i data-lucide="video" class="w-6 h-6 text-red-500 group-hover:text-red-600"></i>
                             <span class="mt-1 text-sm font-medium text-main-color">TikTok</span>
                         </a>
                     </div>
-                    <!-- NOTA IMPORTANTE ACTUALIZADA -->
                     <p class="text-xs text-sub-color text-center mt-4">
                         **ATENCIÓN**: El ícono de **Teléfono** y **WhatsApp** abren un menú de confirmación antes de proceder. Los demás íconos de redes sociales redirigen a sus plataformas correspondientes.
                     </p>
@@ -371,9 +364,9 @@
             </div>
         </section>
         
-        <!-- Modal de Marcado de Teléfono -->
+        <!-- Modal de Marcado de Teléfono - Ajuste para vista en móviles con un ancho máximo más pequeño -->
         <div id="callModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-xs w-full transform transition-transform duration-300 translate-y-4">
                 <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Llamada Directa</h3>
                 <p class="text-center text-sub-color mb-6">¿Deseas contactar a Dylan Gonzalez directamente?</p>
 
@@ -382,12 +375,10 @@
                 </div>
 
                 <div class="flex flex-col space-y-3">
-                    <!-- Botón de Marcar que usa el link tel: -->
                     <a href="tel:5539082013" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
                         <i data-lucide="phone-call" class="w-5 h-5 mr-2"></i>
                         Marcar Ahora
                     </a>
-                    <!-- Botón para cerrar el modal -->
                     <button id="closeCallModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
                         Cancelar
                     </button>
@@ -395,9 +386,9 @@
             </div>
         </div>
 
-        <!-- Modal de WhatsApp (Chatear o Cancelar) -->
+        <!-- Modal de WhatsApp - Ajuste para vista en móviles con un ancho máximo más pequeño -->
         <div id="whatsappModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-xs w-full transform transition-transform duration-300 translate-y-4">
                 <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Iniciar Conversación</h3>
                 <p class="text-center text-sub-color mb-6">Serás redirigido a WhatsApp para chatear con el número:</p>
 
@@ -406,12 +397,10 @@
                 </div>
 
                 <div class="flex flex-col space-y-3">
-                    <!-- Botón de Chatear Ahora que usa el link wa.me -->
                     <a href="https://wa.me/5545371488" target="_blank" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
                         <i data-lucide="message-square" class="w-5 h-5 mr-2"></i>
                         Chatear Ahora
                     </a>
-                    <!-- Botón para cerrar el modal -->
                     <button id="closeWhatsappModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
                         Cancelar
                     </button>
@@ -482,6 +471,7 @@
             const navLinks = document.querySelectorAll('.nav-link');
             let current = '';
 
+            // 70px es la altura fija del header
             sections.forEach(section => {
                 const sectionTop = section.offsetTop - 70; 
                 const sectionHeight = section.clientHeight;
@@ -509,6 +499,7 @@
                 const targetSection = document.getElementById(targetId);
 
                 if (targetSection) {
+                    // Desplazamiento ajustado a la altura del header (70px)
                     window.scrollTo({
                         top: targetSection.offsetTop - 70, 
                         behavior: 'smooth'
@@ -538,6 +529,7 @@
                 modal.classList.remove('hidden');
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
+                    // El translate-y-4 es para la animación de entrada
                     modal.querySelector('div').classList.remove('translate-y-4');
                 }, 10);
             } else {
