@@ -3,908 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta Escuela La Libertad</title>
-    <!-- Carga de Tailwind CSS -->
+    <title>Mi Perfil Profesional</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuración de la fuente Arial y tamaño base 14pt (1.125rem) -->
+    <!-- Carga de Lucide Icons para los iconos -->
+    <script type="module" src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* ==================================================================== */
-        /* DEFINICIÓN DE VARIABLES CSS PARA MODO OSCURO (POR DEFECTO) Y MODO CLARO */
-        /* ==================================================================== */
+        /* Configuración de la fuente Inter para un look profesional */
         :root {
-            /* Colores de Fondo y Borde */
-            --color-bg-body: #0f172a; /* gray-900 */
-            --color-bg-card: #1f2937; /* gray-800 */
-            --color-bg-input: #374151; /* gray-700 */
-            --color-border-main: #374151; /* gray-700 */
-            --color-border-input: #4b5563; /* gray-600 */
-            
-            /* Colores de Texto */
-            --color-text-header: #a78bfa; /* violet-400 */
-            --color-text-body: #d1d5db; /* gray-300 - Texto general (label, p) */
-            --color-text-input: #ffffff; /* white - Texto dentro de inputs/opciones */
-            --color-text-secondary: #9ca3af; /* gray-400 */
-            
-            /* COLORES DEL VOTO (Modo Nocturno - Morado) */
-            --color-vote-highlight: #8b5cf6; /* violet-500 */
-            --color-vote-bar: #7c3aed; /* violet-600 */
-            --color-result-bar: #1aab8b; /* teal-500 */
-
-            /* Ajuste de fuente base para que sea legible en pantallas */
-            font-size: 14pt; 
-            font-family: Arial, sans-serif;
-            background-color: var(--color-bg-body);
-            color: var(--color-text-body);
+            /* Variables de Color para Modo CLARO (Solar) */
+            --color-primary: #0077B5; 
+            --color-secondary: #2C3E50; /* Texto principal oscuro */
+            --color-text-secondary: #4A5568; /* Texto secundario gris */
+            --color-bg-main: #F4F6F9; /* Fondo de la página */
+            --color-bg-card: #FFFFFF; /* Fondo de tarjetas */
+            --color-border: #E2E8F0; /* Borde y divisor */
         }
 
-        /* Estilos específicos para la encuesta */
-        .page-transition-enter {
-            opacity: 0;
-            transform: translateX(10%);
+        /* Estilos específicos para el Modo OSCURO (Nocturno) - Se aplican cuando <body> tiene la clase 'dark' */
+        .dark {
+            /* Variables de Color para Modo OSCURO */
+            --color-primary: #52B5FF; /* Primario más brillante para contraste */
+            --color-secondary: #EAECEE; /* Texto principal claro */
+            --color-text-secondary: #A0AEC0; /* Texto secundario más oscuro */
+            --color-bg-main: #1A202C; /* Fondo oscuro principal */
+            --color-bg-card: #2D3748; /* Tarjetas oscuras */
+            --color-border: #4A5568; /* Borde y divisor oscuro */
         }
 
-        .page-transition-enter-active {
-            opacity: 1;
-            transform: translateX(0);
-            transition: opacity 300ms, transform 300ms;
+        /* Configuración de color principal del Body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-main); /* Usa variable */
+            color: var(--color-secondary); /* Usa variable */
+            scroll-behavior: smooth;
+            /* Transición para el cambio de modo en el fondo y texto */
+            transition: background-color 0.5s ease, color 0.5s ease; 
         }
 
-        .page-transition-exit {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .page-transition-exit-active {
-            opacity: 0;
-            transform: translateX(-10%);
-            transition: opacity 300ms, transform 300ms;
-        }
-
-        /* Estilo para el botón flotante de modo */
-        #mode-toggle-button {
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        #mode-toggle-button:hover {
-            transform: scale(1.1);
-        }
-
-        /* Ocultar las flechas de número en inputs */
-        input[type=number]::-webkit-outer-spin-button,
-        input[type=number]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        /* ==================================================================== */
-        /* AJUSTES PARA MODO CLARO (LIGHT MODE) */
-        /* ==================================================================== */
-        .light-mode {
-            /* Colores de Fondo y Borde (Claro) */
-            --color-bg-body: #f3f4f6; /* gray-100 */
-            --color-bg-card: #ffffff; /* white */
-            --color-bg-input: #e5e7eb; /* gray-200 */
-            --color-border-main: #d1d5db; /* gray-300 */
-            --color-border-input: #9ca3af; /* gray-400 */
-
-            /* Colores de Texto (Claro) */
-            --color-text-header: #3b82f6; /* blue-500 */
-            --color-text-body: #1f2937; /* gray-800 - Texto general (label, p) */
-            --color-text-input: #1f2937; /* gray-800 - Texto dentro de inputs/opciones */
-            --color-text-secondary: #4b5563; /* gray-600 */
-
-            /* COLORES DEL VOTO (Modo Claro - Azul) */
-            --color-vote-highlight: #3b82f6; /* blue-500 */
-            --color-vote-bar: #2563eb; /* blue-600 */
-            --color-result-bar: #059669; /* emerald-600 */
+        /* Estilo para la navegación activa */
+        .nav-link.active {
+            font-weight: 600;
+            color: var(--color-primary); /* Usa variable */
+            border-bottom: 3px solid var(--color-primary); /* Usa variable */
         }
         
-        /* ESTILOS CLAVE PARA LAS OPCIONES (Etiquetas) */
-        .option-label {
-            /* Base: color de fondo por defecto del input */
-            background-color: var(--color-bg-input); 
-            color: var(--color-text-input);
-            border-color: var(--color-border-input);
+        /* Estilo para los botones principales */
+        .btn-primary {
+            background-color: var(--color-primary); /* Usa variable */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            /* Colores de hover se ajustan ligeramente al primario */
+            background-color: #005f91; /* Un poco más oscuro que el primario claro */
+        }
+        /* Ajuste de hover para modo oscuro */
+        .dark .btn-primary:hover {
+            background-color: #3f9be0; 
         }
 
-        /* Estilo cuando la opción está seleccionada (basado en el input radio oculto) */
-        .option-input:checked + .option-label {
-            background-color: var(--color-vote-highlight);
-            color: white; /* El texto debe ser blanco sobre el color de realce */
-            border-color: var(--color-vote-highlight);
+        /* Utilidad para la cabecera (Header) */
+        .page-header {
+            background-color: var(--color-bg-card); /* Usa variable (Fondo de tarjeta/Header) */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        .dark .page-header {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Estilo al pasar el ratón (hover) */
-        .option-label:hover {
-            border-color: var(--color-vote-highlight);
+        /* Utilidad para las tarjetas (Aplica la variable --bg-card) */
+        .card {
+            background-color: var(--color-bg-card); /* Usa variable */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+            border: 1px solid var(--color-border); /* Usa variable para el borde sutil */
         }
-
+        
+        /* Colores de texto y borde que usan variables para consistencia */
+        .text-main-color { color: var(--color-secondary); }
+        .text-sub-color { color: var(--color-text-secondary); }
+        .text-primary-color { color: var(--color-primary); }
+        .border-main-color { border-color: var(--color-border); }
     </style>
 </head>
-<body class="transition-colors duration-500 min-h-screen p-4 md:p-8 flex items-center justify-center">
+<body class="transition duration-500">
 
-    <!-- Botón de Modo Oscuro/Claro -->
-    <button id="mode-toggle-button" onclick="toggleDarkMode()" 
-        class="fixed top-4 right-4 p-3 rounded-full shadow-lg z-50 transition-all duration-300"
-        style="background-color: var(--color-bg-card); color: var(--color-text-header);">
-        <!-- Icono de Sol (Modo Claro) o Luna (Modo Oscuro) - Usando SVG inline -->
-        <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-        </svg>
-        <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-        </svg>
-    </button>
+    <!-- Barra de Navegación (Header) -->
+    <header class="page-header sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="#inicio" class="text-2xl font-bold text-main-color hover:text-primary-color transition duration-300">
+                MI LinkedIn
+            </a>
+            <div class="flex space-x-4 md:space-x-8 items-center">
+                <!-- Los nav-links ahora solo usan las clases genéricas de color y el activo usa la variable -->
+                <a href="#inicio" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="inicio">Inicio</a>
+                <a href="#sobre-mi" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="sobre-mi">Sobre Mí</a>
+                <a href="#proyectos" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="proyectos">Proyectos</a>
+                <a href="#habilidades" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="habilidades">Habilidades</a>
+                <a href="#contacto" class="nav-link text-sub-color hover:text-main-color px-3 py-2 text-sm transition duration-300" data-section="contacto">Contacto</a>
 
+                <!-- Interruptor de Modo Oscuro/Solar -->
+                <button id="themeToggle" class="p-2 rounded-full bg-gray-100 text-sub-color hover:bg-gray-200 transition duration-300 dark:bg-gray-700 dark:hover:bg-gray-600" title="Alternar Modo Oscuro/Claro">
+                    <i data-lucide="sun" id="sunIcon" class="w-5 h-5 transition-transform duration-300"></i>
+                    <i data-lucide="moon" id="moonIcon" class="w-5 h-5 transition-transform duration-300 hidden"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-    <!-- Contenedor Principal de la Aplicación -->
-    <main id="app-container" class="w-full max-w-4xl mx-auto py-8 transition-all duration-300">
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-        <!-- STEP 1: PANTALLA DE ACCESO (Nombre y Matrícula) -->
-        <div id="step-1-container" class="flex flex-col items-center justify-center space-y-8 p-6 md:p-12 rounded-xl shadow-2xl transition-all duration-500"
-            style="background-color: var(--color-bg-card); border: 1px solid var(--color-border-main);">
-
-            <div class="text-center w-full">
-                <h1 class="text-3xl md:text-5xl font-extrabold mb-2" style="color: var(--color-text-header);">
-                    Estudio de Mercado
+        <!-- 1. Sección de Inicio (Hero) -->
+        <section id="inicio" class="py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="md:w-3/5 text-center md:text-left">
+                <p class="text-lg text-sub-color mb-2">¡Hola! Soy</p>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight text-main-color">
+                    Dylan Alberto Gonzalez Jurado
                 </h1>
-                <h2 class="text-xl md:text-2xl font-semibold mb-6" style="color: var(--color-text-body);">
-                    Universidad La Libertad
+                <h2 class="2xl text-sub-color mb-6 font-light">
+                    Estudiante de Administración e Innovación de Negocios
                 </h2>
-                
-                <!-- Aviso Legal y Confidencialidad -->
-                <div class="p-4 md:p-6 rounded-lg mb-8 text-sm md:text-base text-left" style="background-color: var(--color-bg-body); border: 1px solid var(--color-border-main); color: var(--color-text-secondary);">
-                    <p class="mb-2">En calidad de estudiantes de la **Universidad La Salle Campus Condesa**, estamos llevando a cabo un estudio de investigación de mercados enfocado en la **Universidad de la Libertad (UL)** para la asignatura de Investigación de Mercados. El objetivo central de esta iniciativa es analizar y comprender a profundidad el modelo educativo de la institución y sus metodologías de estudio.</p>
-                    <p>Toda la información que sea obtenida de esta investigación persigue únicamente fines académicos; por lo que todos los datos que nos proporcione son confidenciales en su tratamiento.</p>
+                <p class="text-lg text-sub-color mb-8 max-w-xl mx-auto md:mx-0">
+                    Tengo 19 años y, como estudiante, me dedico a explorar soluciones que combinan la administración con la innovación de negocios. Me apasiona transformar ideas complejas en productos funcionales y accesibles.
+                </p>
+            </div>
+            <div class="md:w-2/5 flex justify-center">
+                <!-- Placeholder de Imagen de Perfil -->
+                <div class="w-64 h-64 md:w-80 md:h-80 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-xl transition duration-500">
+                    
+                    <!-- 🚨🚨🚨 RUTA DE LA IMAGEN ACTUALIZADA A UN PLACEHOLDER PÚBLICO GARANTIZADO 🚨🚨🚨 -->
+                    <!-- NOTA: Los enlaces de archivos subidos previamente no estaban funcionando. Este placeholder sí lo hará. -->
+                    <img src="https://placehold.co/800x800/0077B5/FFFFFF?text=D.G." alt="Placeholder de Foto de perfil de Dylan Gonzalez" class="object-cover w-full h-full">
+                    
                 </div>
             </div>
+        </section>
 
-            <!-- Controles de Usuario -->
-            <div class="w-full space-y-6">
-                <!-- Nombre -->
-                <div>
-                    <label for="student-name" class="block font-semibold mb-2" style="color: var(--color-text-body);">Nombre Completo del Participante:</label>
-                    <input type="text" id="student-name" name="Nombre Completo" placeholder="Escriba su nombre completo" required
-                           class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2"
-                           style="background-color: var(--color-bg-input); border-color: var(--color-border-input); color: var(--color-text-input); focus-ring-color: var(--color-vote-highlight);">
+        <div class="border-t border-main-color my-8 transition duration-500"></div>
+
+        <!-- 2. Sección Sobre Mí -->
+        <section id="sobre-mi" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Sobre Mí</h2>
+            <div class="card">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <!-- TEXTO ACTUALIZADO CON STRONG TAGS -->
+                        <p class="text-sub-color mb-4 leading-relaxed">
+                            Mi trayectoria laboral ha estado profundamente ligada a un <strong>negocio familiar de comida</strong>, donde he adquirido una experiencia de 19 años en la gestión operativa y administrativa desde que nací. Actualmente, me encargo de áreas críticas como la <strong>parte financiera y legal</strong>.
+                        </p>
+                        <p class="text-sub-color mb-4 leading-relaxed">
+                            Mi enfoque en la innovación de negocios me ha llevado a generar ideas creativas, como la <strong>creación de nuevos menús y encuestas de satisfacción</strong>. Además, he complementado mi formación con un curso especializado en <strong>programación con Inteligencia Artificial</strong>, buscando fusionar la experiencia tradicional de negocios con soluciones tecnológicas avanzadas.
+                        </p>
+                        <div class="mt-6 flex space-x-4">
+                            <!-- Instagram (Link que ahora usan todos los iconos) -->
+                            <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="text-sub-color hover:text-blue-700 transition duration-300 dark:hover:text-blue-500" title="Perfil de Instagram">
+                                <i data-lucide="instagram" class="w-6 h-6 inline-block"></i>
+                            </a>
+                            <!-- Facebook (Link real) -->
+                            <a href="https://www.facebook.com/share/1VcsY17kop/?mibextid=wwXIfr" target="_blank" class="text-sub-color hover:text-blue-600 transition duration-300 dark:hover:text-blue-400" title="Perfil de Facebook">
+                                <i data-lucide="facebook" class="w-6 h-6 inline-block"></i>
+                            </a>
+                            <!-- TikTok (Link real) -->
+                            <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="text-sub-color hover:text-main-color transition duration-300" title="Perfil de TikTok">
+                                <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
+                                <i data-lucide="video" class="w-6 h-6 inline-block"></i> 
+                            </a>
+                            <!-- Email (Se mantiene el enlace de correo) -->
+                            <a href="mailto:dylan.gonzalez@ejemplo.com" class="text-sub-color hover:text-red-600 transition duration-300 dark:hover:text-red-400" title="Email de Contacto">
+                                <i data-lucide="mail" class="w-6 h-6 inline-block"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="graduation-cap" class="text-primary-color w-6 h-6"></i>
+                            <!-- EDUCACIÓN ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Educación: Licenciatura en Ingeniería de Sistemas, Universidad La Salle</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="briefcase" class="text-primary-color w-6 h-6"></i>
+                            <!-- EXPERIENCIA ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Experiencia: 12 años en el tema de restaurante</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="globe" class="text-primary-color w-6 h-6"></i>
+                            <!-- UBICACIÓN ACTUALIZADA -->
+                            <p class="text-main-color font-medium">Ubicación: Ciudad de México, México</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Sección de Proyectos -->
+        <!-- NOTA: Esta sección usa colores más específicos (gray-50/gray-700) para darle un ligero contraste con el fondo de la página, por lo que mantendremos el dualismo dark: para esos elementos hijos. -->
+        <section id="proyectos" class="py-16 bg-white dark:bg-gray-900 rounded-xl mb-8 p-6 md:p-10 shadow-lg transition duration-500">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Proyectos Destacados</h2>
+            
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                
+                <!-- Tarjeta de Proyecto 1: Educación Financiera -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="banknote" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Educación Financiera para Menores</h3>
+                    <p class="text-sub-color mb-4 text-sm">Creación de un programa curricular enfocado en la enseñanza de conceptos básicos de finanzas, ahorro e inversión para jóvenes.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Educación</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Finanzas</span>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Curriculum</span>
+                    </div>
                 </div>
 
-                <!-- Matrícula -->
-                <div>
-                    <label for="student-id" class="block font-semibold mb-2" style="color: var(--color-text-body);">Matrícula:</label>
-                    <input type="text" id="student-id" name="Matrícula" placeholder="Ingrese su matrícula (solo números)" required
-                           class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2"
-                           style="background-color: var(--color-bg-input); border-color: var(--color-border-input); color: var(--color-text-input); focus-ring-color: var(--color-vote-highlight);">
-                    <p id="matricula-warning" class="text-sm mt-2 text-red-500 hidden font-medium">
-                        ⚠️ La matrícula debe contener sólo números (sin letras, guiones o espacios).
+                <!-- Tarjeta de Proyecto 2: Negocio de Repostería -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="cake" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Negocio de Repostería (Emprendimiento)</h3>
+                    <p class="text-sub-color mb-4 text-sm">Gestión de una microempresa de repostería: desde la producción y logística hasta la estrategia de marketing digital y ventas.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300">Emprendimiento</span>
+                        <span class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-orange-900 dark:text-orange-300">Ventas</span>
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-gray-600 dark:text-gray-300">Logística</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Proyecto 3: Fabricación y Diseño de Gorras -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="hat-off" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Fabricación y Diseño de Gorras</h3>
+                    <p class="text-sub-color mb-4 text-sm">Proyecto enfocado en la cadena de suministro, desde el diseño y la fabricación de productos textiles hasta la comercialización de la marca.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Diseño</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">Producción</span>
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Comercio</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Proyecto 4: IA para Restaurante -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition duration-300 border border-main-color">
+                    <i data-lucide="zap" class="text-primary-color w-8 h-8 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-main-color">Implementación de IA para restaurante</h3>
+                    <p class="text-sub-color mb-4 text-sm">Desarrollo de un componente de Inteligencia Artificial (ej. chatbot o recomendador) para mejorar la interacción y la experiencia del usuario en una web.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">IA/ML</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Programación</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">UX</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Sección de Habilidades (Skills) -->
+        <section id="habilidades" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Habilidades y Competencias Clave</h2>
+            <div class="card">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Columna 1: Gestión Empresarial y Operaciones (Restaurante y Finanzas) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="building-2" class="w-6 h-6 mr-2"></i> Gestión Empresarial y Finanzas</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Administración y Operación de Negocios</strong> (Experiencia de 19 años en familiar).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Control Financiero y Legal</strong> (Gestión de recursos y cumplimiento normativo).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Educación Financiera</strong> (Desarrollo curricular para menores).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 2: Emprendimiento y Producción (Repostería y Gorras) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="lightbulb" class="w-6 h-6 mr-2"></i> Emprendimiento y Cadenas de Suministro</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Gestión de Microempresas</strong> (Repostería: producción, marketing y ventas).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Cadena de Suministro y Logística</strong> (Desde la fabricación de gorras hasta la comercialización).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Diseño de Productos</strong> (Creación de nuevos menús y diseño de productos textiles).</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Columna 3: Innovación y Desarrollo Digital (IA y Web) -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color flex items-center"><i data-lucide="zap" class="w-6 h-6 mr-2"></i> Innovación y Desarrollo Digital</h3>
+                        <ul class="space-y-2 text-sub-color">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Programación con Inteligencia Artificial</strong> (Aplicación de modelos en negocios).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Desarrollo Web</strong> (Conocimiento en arquitectura para implementación de IA).</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mr-2"></i> <strong>Experiencia del Usuario (UX)</strong> (Diseño de encuestas y optimización de interacción).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Sección de Contacto -->
+        <section id="contacto" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-main-color">Hablemos</h2>
+            <div class="card max-w-2xl mx-auto">
+                <p class="text-center text-sub-color mb-6">Estoy disponible para nuevos proyectos y oportunidades. ¡Envíame un mensaje!</p>
+
+                <!-- BLOQUE DE CONEXIÓN DIRECTA (REDES SOCIALES Y CONTACTO) -->
+                <div class="mb-10 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-main-color">
+                    <h4 class="text-xl font-semibold text-center mb-6 text-main-color">Conéctate Directamente</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                        
+                        <!-- Instagram (Link Principal) -->
+                        <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir al Instagram principal">
+                            <i data-lucide="instagram" class="w-6 h-6 text-pink-500 group-hover:text-pink-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Instagram</span>
+                        </a>
+                        
+                        <!-- WhatsApp (USA MODAL) -->
+                        <a href="#" id="openWhatsappModal" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Abrir chat de WhatsApp">
+                            <i data-lucide="message-circle" class="w-6 h-6 text-green-500 group-hover:text-green-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">WhatsApp</span>
+                        </a>
+
+                        <!-- Teléfono (USA MODAL) -->
+                        <a href="#" id="openCallModal" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Mostrar número para llamar">
+                            <i data-lucide="phone" class="w-6 h-6 text-primary-color group-hover:text-blue-700"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Teléfono</span>
+                        </a>
+
+                        <!-- Facebook (ACTUALIZADO) -->
+                        <a href="https://www.facebook.com/share/1VcsY17kop/?mibextid=wwXIfr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir a Facebook">
+                            <i data-lucide="facebook" class="w-6 h-6 text-blue-600 group-hover:text-blue-700"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">Facebook</span>
+                        </a>
+
+                        <!-- X (Twitter) -->
+                        <a href="https://www.instagram.com/dylannn_gnz_?igsh=NHpmemNmd3pkNnYx&utm_source=qr" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir al Instagram (X)">
+                            <i data-lucide="twitter" class="w-6 h-6 text-main-color group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">X (IG)</span>
+                        </a>
+
+                        <!-- TikTok (ACTUALIZADO) -->
+                        <a href="https://www.tiktok.com/@dylann_gnz?_r=1&_t=ZS-91JpW7hfgQP" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition duration-200 group border border-main-color shadow-sm" title="Ir a TikTok">
+                            <!-- Usamos 'video' ya que 'tiktok' no existe en Lucide -->
+                            <i data-lucide="video" class="w-6 h-6 text-red-500 group-hover:text-red-600"></i>
+                            <span class="mt-1 text-sm font-medium text-main-color">TikTok</span>
+                        </a>
+                    </div>
+                    <!-- NOTA IMPORTANTE ACTUALIZADA -->
+                    <p class="text-xs text-sub-color text-center mt-4">
+                        **ATENCIÓN**: El ícono de **Teléfono** y **WhatsApp** abren un menú de confirmación antes de proceder. Los demás íconos de redes sociales redirigen a sus plataformas correspondientes.
                     </p>
                 </div>
-                
-                <!-- Mensaje de error general -->
-                <div id="general-message" class="p-3 text-sm rounded-lg transition-opacity duration-300 hidden" role="alert" style="background-color: rgba(255, 0, 0, 0.2); color: red;">
-                    <!-- El mensaje se inyecta con JS -->
-                </div>
+                <!-- FIN BLOQUE DE CONEXIÓN DIRECTA -->
 
-                <!-- Botón de Acceso (CORREGIDO: Llamando a handleAccess) -->
-                <button onclick="handleAccess()"
-                        class="w-full py-4 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 hover:opacity-90 mt-8"
-                        style="background-color: var(--color-vote-highlight); color: white;">
-                    Acceder al Cuestionario de Percepción
-                </button>
+                <form action="mailto:dylanalberto270506@gmail.com" method="POST" enctype="text/plain" id="contactForm" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-sub-color mb-1">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required class="w-full p-3 border border-main-color rounded-lg focus:ring-primary-color focus:border-primary-color transition duration-150 bg-white dark:bg-gray-700 text-main-color" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-sub-color mb-1">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full p-3 border border-main-color rounded-lg focus:ring-primary-color focus:border-primary-color transition duration-150 bg-white dark:bg-gray-700 text-main-color" placeholder="Escribe por si tienes alguna duda"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full text-center py-3 font-semibold">
+                        Enviar Mensaje
+                    </button>
+                </form>
             </div>
-        </div>
-
-        <!-- STEP 2: CONTENEDOR DE LA ENCUESTA (Oculto por defecto) -->
-        <div id="step-2-container" class="hidden flex-col items-center justify-center space-y-8 p-6 md:p-12 rounded-xl shadow-2xl"
-            style="background-color: var(--color-bg-card); border: 1px solid var(--color-border-main);">
-
-            <!-- Barra de Progreso y Navegación (Header) -->
-            <header class="w-full mb-4 space-y-4">
-                <h1 class="text-2xl md:text-3xl font-extrabold text-center" style="color: var(--color-text-header);">Cuestionario de Percepción</h1>
-                
-                <!-- Botón de Regreso (Atrás) -->
-                <button id="back-button" onclick="goToPage(currentPage - 1)" 
-                    class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-300 hidden"
-                    style="background-color: var(--color-bg-input); color: var(--color-text-body);">
-                    ← Atrás
-                </button>
-
-                <!-- Contenedor de la Barra de Progreso -->
-                <div class="w-full bg-gray-700 rounded-full h-3 transition-colors duration-300" style="background-color: var(--color-bg-input);">
-                    <div id="progress-bar" class="h-3 rounded-full transition-all duration-700" style="width: 0%; background-color: var(--color-vote-highlight);"></div>
-                </div>
-                <p id="page-counter" class="text-right text-sm" style="color: var(--color-text-secondary);">Sección 1 de 7</p>
-            </header>
-            
-            <!-- Contenedor de Instrucciones (SOLO EN LA PÁGINA 1) -->
-            <div id="instructions-container" class="w-full transition-all duration-300">
-                <!-- Se inyecta aquí o se oculta con JS -->
-            </div>
-
-            <!-- Contenedor de la Pregunta (Aquí se inyectará el contenido de la página actual) -->
-            <div id="question-container" class="w-full">
-                <!-- Contenido de la pregunta inyectado por JS -->
-            </div>
-
-            <!-- Botón de Siguiente/Finalizar -->
-            <button id="next-button" onclick="handleNext()"
-                    class="w-full py-3 rounded-xl font-bold text-lg shadow-md transition-all duration-300 hover:opacity-90 mt-6"
-                    style="background-color: var(--color-vote-highlight); color: white;">
-                Siguiente
-            </button>
-        </div>
+        </section>
         
-        <!-- STEP 3: PANTALLA DE AGRADECIMIENTO (Oculto por defecto) -->
-        <div id="step-3-container" class="hidden flex-col items-center justify-center space-y-8 p-6 md:p-12 rounded-xl shadow-2xl text-center min-h-[50vh]"
-            style="background-color: var(--color-bg-card); border: 1px solid var(--color-border-main);">
-            
-            <div id="final-status-icon-success">
-                <svg class="w-16 h-16" style="color: var(--color-text-header);" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-            <div id="final-status-icon-error" class="hidden">
-                 <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
+        <!-- Modal de Marcado de Teléfono -->
+        <div id="callModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+                <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Llamada Directa</h3>
+                <p class="text-center text-sub-color mb-6">¿Deseas contactar a Dylan Gonzalez directamente?</p>
 
-            <h1 id="final-status-title" class="text-3xl md:text-4xl font-extrabold" style="color: var(--color-text-header);">¡Cuestionario Finalizado!</h1>
-            <p id="final-status-message" class="text-xl" style="color: var(--color-text-body);">
-                Agradecemos profundamente tu tiempo y colaboración. Tu valiosa información será utilizada exclusivamente para fines académicos en el Estudio de Mercado de la Universidad La Libertad.
-            </p>
-            <p class="text-sm" style="color: var(--color-text-secondary);">
-                Puedes cerrar esta ventana.
-            </p>
+                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg mb-6 text-center border border-main-color">
+                    <p class="text-3xl font-extrabold text-primary-color">5539082013</p>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <!-- Botón de Marcar que usa el link tel: -->
+                    <a href="tel:5539082013" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
+                        <i data-lucide="phone-call" class="w-5 h-5 mr-2"></i>
+                        Marcar Ahora
+                    </a>
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeCallModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de WhatsApp (Chatear o Cancelar) -->
+        <div id="whatsappModal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" aria-modal="true" role="dialog">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-transform duration-300 translate-y-4">
+                <h3 class="text-2xl font-bold mb-4 text-center text-main-color">Iniciar Conversación</h3>
+                <p class="text-center text-sub-color mb-6">Serás redirigido a WhatsApp para chatear con el número:</p>
+
+                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg mb-6 text-center border border-main-color">
+                    <p class="text-3xl font-extrabold text-green-500">5545371488</p>
+                </div>
+
+                <div class="flex flex-col space-y-3">
+                    <!-- Botón de Chatear Ahora que usa el link wa.me -->
+                    <a href="https://wa.me/5545371488" target="_blank" class="btn-primary w-full text-center py-3 font-semibold hover:bg-green-600 bg-green-500 flex items-center justify-center">
+                        <i data-lucide="message-square" class="w-5 h-5 mr-2"></i>
+                        Chatear Ahora
+                    </a>
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeWhatsappModal" type="button" class="bg-gray-200 dark:bg-gray-700 text-main-color w-full text-center py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
         </div>
 
     </main>
 
-    <!-- JavaScript para la lógica de la encuesta y el modo oscuro -->
+    <!-- Footer -->
+    <footer class="bg-secondary dark:bg-gray-900 mt-12 py-8 transition duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white dark:text-gray-300">
+            <p class="text-sm">&copy; 2025 Dylan Alberto Gonzalez Jurado. Todos los derechos reservados.</p>
+            <p class="text-xs mt-2">Diseñado con <i data-lucide="heart" class="w-3 h-3 inline-block text-red-400"></i> y Tailwind CSS.</p>
+        </div>
+    </footer>
+
+    <!-- Script para la funcionalidad JS -->
     <script>
-        // ====================================================================
-        // CONSTANTES GLOBALES Y ESTADO
-        // ====================================================================
-        
-        // URL ÚNICA DE FORMSPREE para enviar los datos de la encuesta
-        const FORMSPREE_URL = "https://formspree.io/f/mmpwgrdz";
+        // --- LÓGICA DEL INTERRUPTOR DE TEMA (MODO OSCURO/SOLAR) ---
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const body = document.body;
+        const localStorageKey = 'theme';
 
-        // Definición de las preguntas y opciones (13 preguntas en total, 7 páginas)
-        const QUESTIONS = [
-            // Sección 1: Preguntas 1 y 2
-            {
-                id: 'q1',
-                question: '1.) ¿Dónde sueles ver publicidad de universidades, ya sea en redes sociales, ferias, páginas educativas o cerca de tu escuela o colonia?',
-                options: [
-                    { id: 'a', text: 'A) En redes sociales' },
-                    { id: 'b', text: 'B) En ferias o eventos estudiantiles' },
-                    { id: 'c', text: 'C) En páginas o sitios web educativos' },
-                    { id: 'd', text: 'D) En mi escuela o colonia' },
-                ],
-                page: 1,
-                name: "Q1_Publicidad_Ubicacion" // Nombre que aparecerá en Formspree
-            },
-            
-            {
-                id: 'q2',
-                question: '2.) ¿Has notado si las universidades se anuncian por medios como televisión, radio, carteles o redes sociales, y en qué época del año ves más publicidad?',
-                options: [
-                    { id: 'a', text: 'A) Sí, en medios tradicionales y digitales durante todo el año' },
-                    { id: 'b', text: 'B) Sí, principalmente antes de inscripciones o regreso a clases' },
-                    { id: 'c', text: 'C) Solo en algunos medios y temporadas específicas' },
-                    { id: 'd', text: 'D) No he notado publicidad universitaria reciente' },
-                ],
-                page: 1,
-                name: "Q2_Publicidad_Medios"
-            },
-
-            // Sección 2: Preguntas 3 y 4
-            {
-                id: 'q3',
-                question: '3.) ¿Recuerdas alguna campaña, anuncio o evento de alguna universidad que te haya llamado más la atención?',
-                options: [
-                    { id: 'a', text: 'A) Sí, por su mensaje o creatividad' },
-                    { id: 'b', text: 'B) Sí, por los beneficios o becas que ofrecía' },
-                    { id: 'c', text: 'C) Sí, porque la vi muchas veces en distintos medios' },
-                    { id: 'd', text: 'D) No recuerdo ninguna campaña en especial' },
-                ],
-                page: 2,
-                name: "Q3_Campaña_Llamativa"
-            },
-
-            {
-                id: 'q4',
-                question: '4.) ¿Crees que los anuncios de las universidades brindan información importante, como sus beneficios o programas académicos?',
-                options: [
-                    { id: 'a', text: 'A) Sí, explican claramente los beneficios y programas' },
-                    { id: 'b', text: 'B) Sí, pero la información es muy general' },
-                    { id: 'c', text: 'C) No, casi no dan detalles' },
-                    { id: 'd', text: 'D) No estoy seguro / no he visto anuncios recientes' },
-                ],
-                page: 2,
-                name: "Q4_Anuncios_Importancia"
-            },
-            
-            // Sección 3: Preguntas 5 y 6
-            {
-                id: 'q5',
-                question: '5.) ¿Qué emociones o impacto te genera la publicidad universitaria y qué tanto influye en tu decisión de interesarte por una escuela?',
-                options: [
-                    { id: 'a', text: 'A) Me motiva y me da confianza para saber más' },
-                    { id: 'b', text: 'B) Me llama la atención, pero no influye mucho en mi decisión' },
-                    { id: 'c', text: 'C) Me resulta indiferente, no me genera interés' }, 
-                    { id: 'd', text: 'D) No me gusta o no confío en la publicidad universitaria' },
-                ],
-                page: 3,
-                name: "Q5_Emocion_Publicidad"
-            },
-
-            {
-                id: 'q6',
-                question: '6.) ¿Crees que la publicidad universitaria está dirigida a todos los estudiantes o a ciertos perfiles, y te han llegado anuncios o correos relacionados con tus intereses educativos?',
-                options: [
-                    { id: 'a', text: 'A) Sí, está dirigida a todo tipo de estudiantes' },
-                    { id: 'b', text: 'B) No, va más enfocada a ciertos perfiles o carreras' },
-                    { id: 'c', text: 'C) Sí, he recibido correos o anuncios según mis intereses' },
-                    { id: 'd', text: 'D) No he recibido publicidad relacionada conmigo' },
-                ],
-                page: 3,
-                name: "Q6_Publicidad_Dirigida"
-            },
-
-            // Sección 4: Preguntas 7 y 8
-            {
-                id: 'q7',
-                question: '7.) ¿Qué otras universidades de tu zona consideras parecidas en nivel académico y cuáles te parecen más reconocidas a nivel nacional?',
-                options: [
-                    { id: 'a', text: 'A) Hay varias en mi zona con nivel similar' },
-                    { id: 'b', text: 'B) Solo conozco unas pocas universidades reconocidas' },
-                    { id: 'c', text: 'C) Considero que la universidad más cercana es la más destacada' },
-                    { id: 'd', text: 'D) No conozco muchas universidades ni su nivel académico' },
-                ],
-                page: 4,
-                name: "Q7_Universidades_Similares"
-            },
-
-            {
-                id: 'q8',
-                question: '8.) ¿Qué universidades extranjeras consideras como referencia o ejemplo en su modelo educativo?',
-                options: [
-                    { id: 'a', text: 'A) Universidades de Estados Unidos (como Harvard, MIT, Stanford)' },
-                    { id: 'b', text: 'B) Universidades de Europa (como Oxford, Cambridge, Sorbona)' },
-                    { id: 'c', text: 'C) Universidades de Latinoamérica (como la de Buenos Aires o Chile)' },
-                    { id: 'd', text: 'D) No conozco universidades extranjeras reconocidas' },
-                ],
-                page: 4,
-                name: "Q8_Universidades_Extranjeras"
-            },
-
-            // Sección 5: Preguntas 9 y 10
-            {
-                id: 'q9',
-                question: '9.) ¿Qué factores académicos consideras más importantes al elegir una universidad, como el uso de tecnología, la preparación de los docentes, los valores institucionales o los resultados que ofrece?',
-                options: [
-                    { id: 'a', text: 'A) La preparación y conocimiento de los docentes' },
-                    { id: 'b', text: 'B) El uso de tecnología y plataformas digitales' },
-                    { id: 'c', text: 'C) Los valores, filosofía y resultados de la institución' },
-                    { id: 'd', text: 'D) Todos son igual de importantes al momento de decidir' },
-                ],
-                page: 5,
-                name: "Q9_Factores_Academicos"
-            },
-            
-            {
-                id: 'q10',
-                question: '10.) ¿Hay algún programa académico o carrera universitaria que te haya llamado la atención?',
-                options: [
-                    { id: 'a', text: 'A) Sí, por su plan de estudios o materias' },
-                    { id: 'b', text: 'B) Sí, por las oportunidades laborales que ofrece' },
-                    { id: 'c', text: 'C) Sí, por las becas o beneficios que incluye' },
-                    { id: 'd', text: 'D) No, ninguno me ha llamado la atención' },
-                ],
-                page: 5,
-                name: "Q10_Programa_Llamativo"
-            },
-
-            // Sección 6: Preguntas 11 y 12
-            {
-                id: 'q11',
-                question: '11.) ¿Qué tan importante consideras el costo de inscripción o colegiatura y las becas que ofrecen las universidades para atraer estudiantes?',
-                options: [
-                    { id: 'a', text: 'A) Muy importante, influye directamente en mi decisión' },
-                    { id: 'b', text: 'B) Importante, pero depende de la calidad académica' },
-                    { id: 'c', text: 'C) Poco importante, si la universidad lo vale' },
-                    { id: 'd', text: 'D) No me fijo mucho en el costo o las becas' },
-                ],
-                page: 6,
-                name: "Q11_Costo_Becas"
-            },
-
-            {
-                id: 'q12',
-                question: '12.) ¿Qué tan relevante te parece que una universidad tenga convenios con otras instituciones o empresas?',
-                options: [
-                    { id: 'a', text: 'A) Muy relevante, ayuda a obtener prácticas y empleo' },
-                    { id: 'b', text: 'B) Relevante, pero no es lo más importante' },
-                    { id: 'c', text: 'C) Poco relevante, no influye mucho en mi decisión' },
-                    { id: 'd', text: 'D) No considero importante que tenga convenios' },
-                ],
-                page: 6,
-                name: "Q12_Convenios"
-            },
-            
-            // Sección 7: Pregunta 13
-            {
-                id: 'q13',
-                question: '13.) ¿Qué tan seguido escuchas recomendaciones sobre la universidad por su calidad y prestigio, y qué tanto valoras las opiniones o experiencias de otras personas al elegir dónde estudiar?',
-                options: [
-                    { id: 'a', text: 'A) Muy seguido y las opiniones influyen mucho en mi decisión' },
-                    { id: 'b', text: 'B) A veces escucho comentarios, pero no determinan mi elección' },
-                    { id: 'c', text: 'C) Rara vez escucho recomendaciones, confío más en mi propio criterio' },
-                    { id: 'd', text: 'D) No me baso en opiniones ni recomendaciones de otros' },
-                ],
-                page: 7,
-                name: "Q13_Recomendaciones"
-            },
-        ];
-
-        // Mapeo de preguntas a páginas para navegación
-        const QUESTIONS_PER_PAGE = QUESTIONS.reduce((acc, q) => {
-            if (!acc[q.page]) {
-                acc[q.page] = [];
-            }
-            acc[q.page].push(q);
-            return acc;
-        }, {});
-
-        const TOTAL_PAGES = Object.keys(QUESTIONS_PER_PAGE).length; // Ahora 7
-        const TOTAL_QUESTIONS = QUESTIONS.length; // Ahora 13
-        
-        let currentPage = 1;
-        let USER_INFO = { name: '', studentId: '' };
-        
-        // Objeto para guardar las respuestas del usuario (clave: preguntaId, valor: opcionId)
-        const USER_RESPONSES = {};
-        
-        // Texto de las instrucciones
-        const INSTRUCTIONS_TEXT = `
-            <div class="p-4 md:p-6 rounded-lg mb-8" style="background-color: var(--color-bg-body); border: 1px solid var(--color-border-main); color: var(--color-text-body);">
-                <h4 class="text-xl font-bold mb-3" style="color: var(--color-text-header);">INSTRUCCIONES</h4>
-                <p>De las siguientes preguntas, responde de acuerdo con lo que consideres más adecuado según tu perspectiva; en caso de tener alguna duda en algún cuestionamiento pregunta al encuestador.</p>
-            </div>
-        `;
-
-        // ====================================================================
-        // MANEJO DE LA INTERFAZ Y NAVEGACIÓN
-        // ====================================================================
-
-        /**
-         * Renderiza la pregunta o grupo de preguntas de la página actual.
-         */
-        function renderPage() {
-            const questionContainer = document.getElementById('question-container');
-            const instructionsContainer = document.getElementById('instructions-container');
-            const questions = QUESTIONS_PER_PAGE[currentPage];
-            
-            if (!questions || questions.length === 0) {
-                // Si no hay preguntas, vamos a la pantalla de agradecimiento
-                document.getElementById('step-2-container').classList.add('hidden');
-                document.getElementById('step-3-container').classList.remove('hidden');
-                document.getElementById('step-3-container').classList.add('flex');
-                return;
-            }
-
-            // Ocultar el contenido anterior con animación de salida
-            questionContainer.classList.remove('page-transition-enter-active');
-            questionContainer.classList.add('page-transition-exit-active');
-            
-            // Mostrar instrucciones solo en la primera página
-            if (currentPage === 1) {
-                instructionsContainer.innerHTML = INSTRUCTIONS_TEXT;
-                instructionsContainer.classList.remove('hidden');
+        // 1. Función para establecer el tema
+        function setTheme(isDark) {
+            if (isDark) {
+                body.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem(localStorageKey, 'dark');
             } else {
-                instructionsContainer.innerHTML = '';
-                instructionsContainer.classList.add('hidden');
+                body.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem(localStorageKey, 'light');
             }
+        }
 
-            setTimeout(() => {
-                let htmlContent = '';
-                questions.forEach((q, index) => {
-                    // Actualizar contador de preguntas basado en la posición global
-                    const globalIndex = QUESTIONS.findIndex(item => item.id === q.id);
-                    const questionNumber = globalIndex + 1;
-                    
-                    htmlContent += `
-                        <div class="question-item mb-8 p-4 rounded-lg shadow-md transition-colors duration-300"
-                            style="background-color: var(--color-bg-body); border: 1px solid var(--color-border-main);">
-                            <p id="page-counter-q${q.id}" class="text-xs font-medium mb-2" style="color: var(--color-text-secondary);">
-                                Pregunta ${questionNumber} de ${TOTAL_QUESTIONS}
-                            </p>
-                            <h3 class="text-lg md:text-xl font-semibold mb-4" style="color: var(--color-text-body);">
-                                ${q.question}
-                            </h3>
-                    `;
-                    
-                    // Pregunta de opción múltiple (radio buttons)
-                    q.options.forEach(option => {
-                        const uniqueId = `option-${q.id}-${option.id}`;
-                        const isChecked = USER_RESPONSES[q.id] === option.id;
-                        
-                        htmlContent += `
-                            <div class="mb-3">
-                                <input type="radio" id="${uniqueId}" name="${q.id}" value="${option.text}" 
-                                    ${isChecked ? 'checked' : ''} class="hidden option-input"
-                                    onchange="saveResponse('${q.id}', '${option.id}')">
-                                <label for="${uniqueId}" 
-                                    class="flex items-center p-4 rounded-lg cursor-pointer border transition-all duration-300 option-label hover:border-violet-400">
-                                    <span class="text-lg font-medium">${option.text}</span>
-                                </label>
-                            </div>
-                        `;
-                    });
-                    
-                    htmlContent += `</div>`;
-                });
+        // 2. Comprobar la preferencia del sistema y de localStorage al cargar
+        function loadTheme() {
+            const storedTheme = localStorage.getItem(localStorageKey);
+            
+            // Si hay una preferencia guardada, úsala.
+            if (storedTheme) {
+                setTheme(storedTheme === 'dark');
+            } else {
+                // Si no hay preferencia, usa la preferencia del sistema operativo (media query)
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(prefersDark);
+            }
+        }
 
-                // Reemplazar y aplicar animación de entrada
-                questionContainer.innerHTML = htmlContent;
-                questionContainer.classList.remove('page-transition-exit-active');
-                questionContainer.classList.add('page-transition-enter', 'page-transition-enter-active');
+        // 3. Manejar el click del interruptor
+        themeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = body.classList.contains('dark');
+            // Cambia al tema opuesto
+            setTheme(!isCurrentlyDark);
+        });
+        
+        // --- LÓGICA DE NAVEGACIÓN Y SCROLL ---
+
+        // Script para activar el enlace de navegación según la sección visible
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 70; 
+                const sectionHeight = section.clientHeight;
                 
-                // Actualizar barra de progreso y botones
-                updateNavigationUI();
-            }, 300); // Esperar la duración de la animación de salida
-        }
-
-        /**
-         * Actualiza la barra de progreso, el contador y los botones de navegación.
-         */
-        function updateNavigationUI() {
-            const progressBar = document.getElementById('progress-bar');
-            const pageCounter = document.getElementById('page-counter');
-            const backButton = document.getElementById('back-button');
-            const nextButton = document.getElementById('next-button');
-
-            // 1. Progreso Global
-            // Usamos la página actual para el progreso de navegación.
-            const progress = (currentPage / TOTAL_PAGES) * 100;
-            progressBar.style.width = `${progress}%`;
-            
-            // 2. Contador de Página
-            pageCounter.textContent = `Sección ${currentPage} de ${TOTAL_PAGES}`;
-
-            // 3. Botón 'Atrás'
-            if (currentPage > 1) {
-                backButton.classList.remove('hidden');
-            } else {
-                backButton.classList.add('hidden');
-            }
-
-            // 4. Botón 'Siguiente'
-            if (currentPage < TOTAL_PAGES) {
-                nextButton.textContent = 'Siguiente';
-                nextButton.onclick = handleNext; // Asegura que la función sea handleNext
-            } else {
-                nextButton.textContent = 'Finalizar Cuestionario';
-                nextButton.onclick = handleNext; // handleNext gestiona la finalización
-            }
-        }
-
-        /**
-         * Navega a una página específica.
-         * @param {number} pageNumber - El número de página a la que navegar.
-         */
-        function goToPage(pageNumber) {
-            if (pageNumber >= 1 && pageNumber <= TOTAL_PAGES) {
-                currentPage = pageNumber;
-                renderPage();
-                window.scrollTo(0, 0); // Desplazar al inicio de la página para mejor UX
-            } else if (pageNumber > TOTAL_PAGES) {
-                // Finalización (se maneja en handleNext)
-            }
-        }
-        
-        // ====================================================================
-        // MANEJO DE RESPUESTAS Y DATOS
-        // ====================================================================
-
-        /**
-         * Guarda la respuesta de una pregunta de opción múltiple.
-         * @param {string} questionId - ID de la pregunta (e.g., 'q1').
-         * @param {string} optionId - ID de la opción seleccionada (e.g., 'a').
-         */
-        function saveResponse(questionId, optionId) {
-            USER_RESPONSES[questionId] = optionId;
-            console.log(`Respuesta guardada para ${questionId}: ${optionId}`);
-        }
-        
-        /**
-         * Valida que todas las preguntas en la página actual estén respondidas.
-         * @returns {boolean} - true si todas las preguntas están respondidas, false en caso contrario.
-         */
-        function validateCurrentPage() {
-            const questions = QUESTIONS_PER_PAGE[currentPage];
-            let allAnswered = true;
-            
-            // Remover cualquier resaltado de error previo
-            document.querySelectorAll('.question-item').forEach(el => {
-                el.style.borderColor = 'var(--color-border-main)';
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
             });
 
-            for (const q of questions) {
-                // Pregunta de opción múltiple
-                if (!USER_RESPONSES[q.id]) {
-                    // Resaltar la pregunta no respondida 
-                    // Se utiliza document.querySelector para encontrar el input y luego .closest() para encontrar el contenedor
-                    const questionElement = document.getElementById('question-container').querySelector(`input[name="${q.id}"]`);
-                    
-                    if (questionElement) {
-                        // Envolver la pregunta en un color de error.
-                        questionElement.closest('.question-item').style.borderColor = 'var(--color-vote-highlight)'; 
-                        questionElement.closest('.question-item').style.boxShadow = '0 0 0 3px rgba(255, 0, 0, 0.5)'; // Rojo con transparencia
-                    }
-                    allAnswered = false;
-                } else {
-                     // Remover la sombra si está respondida
-                    const questionElement = document.getElementById('question-container').querySelector(`input[name="${q.id}"]`);
-                    if (questionElement) {
-                         questionElement.closest('.question-item').style.boxShadow = '0 0 0 0 transparent'; 
-                    }
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Se asegura que si 'current' es vacío (al inicio de la página), 'inicio' se resalte
+                if (link.getAttribute('data-section') === current || (current === '' && link.getAttribute('data-section') === 'inicio')) {
+                    link.classList.add('active');
                 }
-            }
-            
-            if (!allAnswered) {
-                showMessage('Por favor, responda a todas las preguntas de esta sección antes de continuar.', true);
-            }
-            return allAnswered;
-        }
+            });
+        });
 
-        /**
-         * Convierte los datos de la encuesta en un objeto FormData listo para Formspree.
-         * @param {Object} finalData - El objeto final con USER_INFO y USER_RESPONSES.
-         * @returns {FormData} - Objeto FormData para la solicitud POST.
-         */
-        function prepareFormData(finalData) {
-            const formData = new FormData();
-            
-            // 1. Agregar Información del Participante
-            formData.append("Nombre Completo", finalData.userInfo.name);
-            formData.append("Matrícula", finalData.userInfo.studentId);
-            formData.append("Fecha/Hora de Envío", finalData.timestamp);
-            
-            // 2. Agregar Respuestas de las Preguntas
-            for (const questionId in finalData.responses) {
-                const responseId = finalData.responses[questionId]; // e.g., 'a'
-                
-                // Buscar la pregunta para obtener el nombre clave y el texto completo de la respuesta
-                const questionObj = QUESTIONS.find(q => q.id === questionId);
-                
-                if (questionObj) {
-                    const responseOption = questionObj.options.find(opt => opt.id === responseId);
-                    
-                    if (responseOption) {
-                        // Usamos el campo 'name' de la pregunta y el 'text' de la opción como valor
-                        formData.append(questionObj.name, responseOption.text);
-                    }
+        // Script para manejar clics y desplazamiento suave
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); 
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 70, 
+                        behavior: 'smooth'
+                    });
+
+                    history.pushState(null, '', `#${targetId}`);
                 }
-            }
-            
-            return formData;
-        }
-
-        /**
-         * Muestra la pantalla de agradecimiento o error después del envío.
-         * @param {boolean} success - Si el envío fue exitoso.
-         */
-        function showFinalStatusScreen(success) {
-            const step2 = document.getElementById('step-2-container');
-            const step3 = document.getElementById('step-3-container');
-            const title = document.getElementById('final-status-title');
-            const message = document.getElementById('final-status-message');
-            const iconSuccess = document.getElementById('final-status-icon-success');
-            const iconError = document.getElementById('final-status-icon-error');
-
-            step2.classList.add('hidden');
-            step3.classList.remove('hidden');
-            step3.classList.add('flex');
-
-            if (success) {
-                iconSuccess.classList.remove('hidden');
-                iconError.classList.add('hidden');
-                title.textContent = '¡Cuestionario Finalizado!';
-                message.textContent = 'Agradecemos profundamente tu tiempo y colaboración. Tu valiosa información ha sido enviada con éxito para el Estudio de Mercado de la Universidad La Libertad.';
-                title.style.color = 'var(--color-text-header)';
-
-            } else {
-                iconSuccess.classList.add('hidden');
-                iconError.classList.remove('hidden');
-                title.textContent = '¡Error en el Envío!';
-                message.textContent = 'Hubo un problema al enviar tu cuestionario. Por favor, revisa tu conexión a Internet o contacta al encuestador.';
-                title.style.color = 'red';
-            }
-        }
-        
-        /**
-         * Maneja el clic en el botón 'Siguiente' o 'Finalizar'.
-         */
-        function handleNext() {
-            // 1. Validar la página actual
-            if (!validateCurrentPage()) {
-                return; // Detiene si falta responder algo
-            }
-            
-            // 2. Si es la última página, finalizar la encuesta
-            if (currentPage >= TOTAL_PAGES) {
-                // Preparamos los datos
-                const finalData = {
-                    userInfo: USER_INFO,
-                    responses: USER_RESPONSES,
-                    timestamp: new Date().toISOString()
-                };
                 
-                console.log("DATOS FINALES DE LA ENCUESTA (listos para enviar):", finalData);
-                
-                // CAMBIO CLAVE: ENVÍO DE DATOS A FORMSPREE
-                document.getElementById('next-button').textContent = "Enviando...";
-                document.getElementById('next-button').disabled = true;
+                // Quita 'active' de todos los enlaces y lo agrega al clickeado para el resaltado inmediato
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
-                fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    body: prepareFormData(finalData), // Usamos la función que prepara el FormData
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        showFinalStatusScreen(true); // Éxito
-                    } else {
-                        // Manejo de errores de Formspree
-                        console.error("Error al enviar a Formspree:", response);
-                        showFinalStatusScreen(false); // Error
-                    }
-                })
-                .catch(error => {
-                    // Manejo de errores de red
-                    console.error("Error de red al enviar el formulario:", error);
-                    showFinalStatusScreen(false); // Error
-                })
-                .finally(() => {
-                     // Restaurar el botón (aunque no se verá, es buena práctica)
-                    document.getElementById('next-button').textContent = "Finalizar Cuestionario";
-                    document.getElementById('next-button').disabled = false;
-                });
-                
-            } else {
-                // 3. Si no es la última página, ir a la siguiente
-                goToPage(currentPage + 1);
-            }
-        }
+        // --- LÓGICA DE MODALES (Teléfono y WhatsApp) ---
         
-        // ====================================================================
-        // MANEJO DE LA PANTALLA DE ACCESO (STEP 1)
-        // ====================================================================
+        const callModal = document.getElementById('callModal');
+        const openCallModalBtn = document.getElementById('openCallModal');
+        const closeCallModalBtn = document.getElementById('closeCallModal');
+        const whatsappModal = document.getElementById('whatsappModal');
+        const openWhatsappModalBtn = document.getElementById('openWhatsappModal');
+        const closeWhatsappModalBtn = document.getElementById('closeWhatsappModal');
 
-        /**
-         * Muestra un mensaje de éxito o error en el contenedor de mensajes general.
-         * @param {string} message - El texto del mensaje.
-         * @param {boolean} isError - Si es true, muestra color de error; si es false, color de éxito.
-         */
-        function showMessage(message, isError) {
-            const messageBox = document.getElementById('general-message');
-            messageBox.textContent = message;
-            messageBox.style.backgroundColor = isError ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 255, 0, 0.2)';
-            messageBox.style.color = isError ? 'red' : 'green';
-            messageBox.classList.remove('hidden');
-            setTimeout(() => {
-                messageBox.classList.add('hidden');
-            }, 5000); // Ocultar después de 5 segundos
-        }
-
-        /**
-         * Maneja la validación de la pantalla de acceso.
-         * Esta función se llama al hacer clic en el botón "Acceder al Cuestionario de Percepción".
-         */
-        function handleAccess() {
-            const nameInput = document.getElementById('student-name');
-            const idInput = document.getElementById('student-id');
-            
-            const name = nameInput.value.trim();
-            const studentId = idInput.value.trim();
-
-            // Validación: Matrícula debe ser sólo números.
-            const isNumeric = /^\d+$/.test(studentId); 
-
-            if (!name) {
-                showMessage("Por favor, ingrese su Nombre Completo para continuar.", true);
-                nameInput.focus();
-                return;
-            }
-            
-            // Validación estricta: Matrícula debe ser numérica y no vacía.
-            if (!studentId || !isNumeric) {
-                showMessage("La matrícula es obligatoria y debe contener SÓLO números. Por favor, corrija el valor.", true);
-                idInput.focus();
-                
-                // Asegurar que el warning visible si hay error estricto
-                if (!isNumeric) {
-                    document.getElementById('matricula-warning').classList.remove('hidden');
-                }
-                return;
-            }
-            
-            // Si todo es correcto, ocultamos el mensaje de advertencia
-            document.getElementById('matricula-warning').classList.add('hidden');
-
-
-            // Guardar info del usuario
-            USER_INFO = { name: name, studentId: studentId };
-
-            // Ocultar Paso 1 y mostrar Paso 2
-            document.getElementById('step-1-container').classList.add('hidden');
-            document.getElementById('step-2-container').classList.remove('hidden');
-            document.getElementById('step-2-container').classList.add('flex');
-
-            // Iniciar la encuesta en la primera página
-            goToPage(1);
-        }
-
-        // ====================================================================
-        // MANEJO DE MODO OSCURO/CLARO
-        // ====================================================================
-
-        /**
-         * Alterna entre modo oscuro (dark-mode) y modo claro (light-mode).
-         */
-        function toggleDarkMode() {
-            const body = document.body;
-            const isDarkMode = !body.classList.contains('light-mode');
-            
-            if (isDarkMode) {
-                body.classList.add('light-mode');
-                document.getElementById('moon-icon').classList.add('hidden');
-                document.getElementById('sun-icon').classList.remove('hidden');
-                localStorage.setItem('colorMode', 'light');
+        // Función reutilizable para mostrar/ocultar modales con transiciones
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('div').classList.remove('translate-y-4');
+                }, 10);
             } else {
-                body.classList.remove('light-mode');
-                document.getElementById('moon-icon').classList.remove('hidden');
-                document.getElementById('sun-icon').classList.add('hidden');
-                localStorage.setItem('colorMode', 'dark');
-            }
-        }
-        
-        /**
-         * Aplica el modo de color guardado al cargar la página.
-         */
-        function applySavedColorMode() {
-            const savedMode = localStorage.getItem('colorMode');
-            const body = document.body;
-
-            if (savedMode === 'light') {
-                body.classList.add('light-mode');
-                document.getElementById('moon-icon').classList.add('hidden');
-                document.getElementById('sun-icon').classList.remove('hidden');
-            } else {
-                // Por defecto es dark-mode si no hay nada guardado
-                body.classList.remove('light-mode');
-                document.getElementById('moon-icon').classList.remove('hidden');
-                document.getElementById('sun-icon').classList.add('hidden');
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('translate-y-4');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); 
             }
         }
 
-        // ====================================================================
-        // INICIALIZACIÓN
-        // ====================================================================
+        // Event Listeners para Modal de Llamada
+        openCallModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleModal(callModal, true);
+        });
+        closeCallModalBtn.addEventListener('click', () => {
+            toggleModal(callModal, false);
+        });
+        callModal.addEventListener('click', (e) => {
+            if (e.target === callModal) {
+                toggleModal(callModal, false);
+            }
+        });
+
+        // Event Listeners para Modal de WhatsApp
+        openWhatsappModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleModal(whatsappModal, true);
+        });
+        closeWhatsappModalBtn.addEventListener('click', () => {
+            toggleModal(whatsappModal, false);
+        });
+        whatsappModal.addEventListener('click', (e) => {
+            if (e.target === whatsappModal) {
+                toggleModal(whatsappModal, false);
+            }
+        });
         
-        // Se ejecuta al cargar la página
+        // Inicializar Lucide Icons, cargar tema y disparar scroll al cargar
         window.onload = function() {
-            applySavedColorMode();
-            // La encuesta inicia en el Paso 1 (Pantalla de Acceso)
+            lucide.createIcons();
+            loadTheme(); // Carga la preferencia de tema guardada o del sistema
+            window.dispatchEvent(new Event('scroll'));
         };
-
     </script>
 </body>
 </html>
